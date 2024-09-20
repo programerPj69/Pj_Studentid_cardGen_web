@@ -15,6 +15,8 @@ Easy to use form layout for entering data.
 Demo
 Here's a preview of the generated ID card format (replace this with your actual screenshot):
 
+#view online 
+https://programerpj69.github.io/Pj_Studentid_cardGen_web/
 
 ### How to Use
 - Clone this repository or download the files.
