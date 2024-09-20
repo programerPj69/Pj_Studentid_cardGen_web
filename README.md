@@ -39,10 +39,9 @@ Click the Generate ID Card button.
 
 #### A PDF file will be generated and downloaded with the details provided.
 
-# Screenshots
-# Form for Input
-
-### Generated ID Card Preview
+- Screenshots
+- Form for Input
+-  Generated ID Card Preview
 
 # Project Structure
 index.html: The main HTML file that contains the form and JavaScript to generate the ID card.
@@ -58,4 +57,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ![logo](view.png)
 
 ## output
-![logo](output.png)
+![logo](ouput.png)
