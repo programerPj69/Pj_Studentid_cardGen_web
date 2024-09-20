@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student ID Card Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .container {
+            width: 300px;
+            margin: 0 auto;
+            
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-group input[type="file"] {
+            padding: 3px;
+        }
+        .btn {
+            width: 140px;
+            height: 50px;
+            background: linear-gradient(to top, #00154c, #12376e, #23487f);
+  color: #fff;
+  border-radius: 50px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+  
+
+ .btn span {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: top 0.5s;
+}
+
+ .btn-text-one {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+ .btn-text-two {
+  position: absolute;
+  width: 100%;
+  top: 150%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+ .btn:hover.btn-text-one {
+  top: -100%;
+}
+
+ .btn:hover.btn-text-two {
+  top: 50%;
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Student ID Card Generator</h2>
+
+        <!-- Form to collect student details -->
+        <div class="form-group">
+            <label for="schoolName">School/University Name</label>
+            <input type="text" id="schoolName" required>
+        </div>
+
+        <div class="form-group">
+            <label for="studentName">Student Name</label>
+            <input type="text" id="studentName" required>
+        </div>
+
+        <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" id="age" required>
+        </div>
+
+        <div class="form-group">
+            <label for="dob">Date of Birth</label>
+            <input type="date" id="dob" required>
+        </div>
+
+        <div class="form-group">
+            <label for="contactNumber">Contact Number</label>
+            <input type="number" id="contactNumber" required="+91">
+        </div>
+
+        <div class="form-group">
+            <label for="enrollmentNumber">Enrollment Number</label>
+            <input type="number" id="enrollmentNumber" required>
+        </div>
+
+        <div class="form-group">
+            <label for="passportPhoto">Passport Photo</label>
+            <input type="file" id="passportPhoto" accept="image .jpg . /*" required>
+        </div>
+
+        <div class="form-group">
+            <label for="esign">E-Signature</label>
+            <input type="file" id="esign" accept="image/*">
+        </div>
+
+        <div class="form-group">
+            <label for="authoritySign">Authority Signature</label>
+            <input type="file" id="authoritySign" accept="image/*">
+        </div>
+        
+        <button class="btn" onclick="generatePDF()">
+          <span class="btn-text-one">Generate</span>
+          <span class="btn-text-two">Great!</span>
+        </button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Collect input values
+            const schoolName = document.getElementById('schoolName').value;
+            const studentName = document.getElementById('studentName').value;
+            const age = document.getElementById('age').value;
+            const dob = document.getElementById('dob').value;
+            const contactNumber = document.getElementById('contactNumber').value;
+            const enrollmentNumber = document.getElementById('enrollmentNumber').value;
+
+            // Layout the card
+            doc.setFillColor(173, 216, 230);
+            doc.rect(10, 10, 85, 120, 'F'); // Card background
+
+            doc.setFontSize(12);
+            doc.text(schoolName, 15, 20);
+            doc.setFontSize(10);
+            doc.text(`Name: ${studentName}`, 15, 35);
+            doc.text(`Age: ${age}`, 15, 45);
+            doc.text(`DOB: ${dob}`, 15, 55);
+            doc.text(`Contact: ${contactNumber}`, 15, 65);
+            doc.text(`Enrollment No: ${enrollmentNumber}`, 15, 75);
+
+            // Add Passport Photo
+            const passportPhoto = document.getElementById('passportPhoto').files[0];
+            if (passportPhoto) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgData = e.target.result;
+                    doc.addImage(imgData, 'PNG', 60, 20, 30, 30);
+                    finalizePDF(doc);
+                };
+                reader.readAsDataURL(passportPhoto);
+            } else {
+                finalizePDF(doc);
+            }
+        }
+
+        function finalizePDF(doc) {
+            // Add E-Signature if available
+            const esign = document.getElementById('esign').files[0];
+            if (esign) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgData = e.target.result;
+                    doc.text('E-Signature:', 15, 85);
+                    doc.addImage(imgData, 'PNG', 15, 90, 30, 15);
+                    addAuthoritySign(doc);
+                };
+                reader.readAsDataURL(esign);
+            } else {
+                addAuthoritySign(doc);
+            }
+        }
+
+        function addAuthoritySign(doc) {
+            // Add Authority Signature if available
+            const authoritySign = document.getElementById('authoritySign').files[0];
+            if (authoritySign) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgData = e.target.result;
+                    doc.text('Authority Signature:', 15, 110);
+                    doc.addImage(imgData, 'PNG', 15, 115, 30, 15);
+                    doc.save('Student_ID_Card.pdf');
+                };
+                reader.readAsDataURL(authoritySign);
+            } else {
+                doc.save('student.pdf');
+            }
+        }
+    </script>
+
+</body>
+</html>
