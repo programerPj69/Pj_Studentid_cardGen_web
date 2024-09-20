@@ -53,8 +53,7 @@ Libraries Used
 jsPDF: A popular library for generating PDF files in the browser.
 License
 This project is licensed under the MIT License - see the LICENSE file for details.
-## View 
-![logo](view.png)
+## View                           ## output
+![logo](view.png)                  ![logo](ouput.png)
 
-## output
-![logo](ouput.png)
+
